@@ -29,27 +29,29 @@ def run(path, ssh_argv):
             print("try to fetch %s from remote..."%i)
             scp.get(i, os.path.join(path, name))
             print("remote:"+i+"->"+"local:"+os.path.join(path, name))
+def main():
+    home_directory = os.environ["HOME"]
 
-home_directory = os.environ["HOME"]
+    parser = argparse.ArgumentParser(description='scp helper for "vscode remote-ssh"')
+    parser.add_argument("path", type=str, action="store", help="the path of folder or file contains remote pathes")
+    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "Myscripts/Conf/scphelper.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
+    args = parser.parse_args()
 
-parser = argparse.ArgumentParser(description='scp helper for "vscode remote-ssh"')
-parser.add_argument("path", type=str, action="store", help="the path of folder or file contains remote pathes")
-parser.add_argument("--config", "-c", default=os.path.join(home_directory, "Myscripts/Conf/scphelper.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
-args = parser.parse_args()
+    if os.path.exists(args.config)==False:
+        conf_dict = {}
+        conf_dict["username"] = input("input user name: ")
+        while True:
+            passwd = getpass.getpass("input password:")
+            passwd2 = getpass.getpass("please input again: ")
+            if passwd==passwd2:
+                break
+            else:
+                print("password should be same as the first one!")
+        conf_dict["password"] = passwd
+        conf_dict["hostname"] = input("input host name: ")
 
-if os.path.exists(args.config)==False:
-    conf_dict = {}
-    conf_dict["username"] = input("input user name: ")
-    while True:
-        passwd = getpass.getpass("input password:")
-        passwd2 = getpass.getpass("please input again: ")
-        if passwd==passwd2:
-            break
-        else:
-            print("password should be same as the first one!")
-    conf_dict["password"] = passwd
-    conf_dict["hostname"] = input("input host name: ")
+    ssh_conf = json.loads(Kkit.load(args.config, "utf-8"))
+    run(args.path, ssh_conf)
 
-ssh_conf = json.loads(Kkit.load(args.config, "utf-8"))
-run(args.path, ssh_conf)
-    
+if __name__=="__main__":
+    main()
