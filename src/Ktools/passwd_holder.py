@@ -38,7 +38,7 @@ def get_passwd(conf_dict, pin):
                 encrypted_passwd = conf_dict["passwds"][key]
                 # cipher_suite = Fernet(gen_key(pin))
                 # password = cipher_suite.decrypt(encrypted_passwd).decode("utf-8")
-                password = encryption.decrypt_string(encrypted_passwd, pin)
+                password = encryption.decrypt_string(encrypted_passwd, encryption.gen_key(pin))
                 pyperclip.copy(password)
                 print("copied password for %s to clipborad."%key)
             except KeyError:
@@ -62,7 +62,7 @@ def store_passwd(conf_dict, conf_path, pin):
         else:
             print("password should be same as the first one!")
     # conf_dict["passwds"][key] = cipher_suite.encrypt(passwd.encode("utf-8")).decode("utf-8")
-    conf_dict["passwds"][key] = encryption.encrypt_string(passwd, pin)
+    conf_dict["passwds"][key] = encryption.encrypt_string(passwd, encryption.gen_key(pin))
     Kkit.store(conf_path, json.dumps(conf_dict, indent=4, ensure_ascii=False), encoding="utf-8")
     print("password added/modified to %s"%conf_path)
 
