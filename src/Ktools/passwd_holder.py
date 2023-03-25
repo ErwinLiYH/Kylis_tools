@@ -69,7 +69,7 @@ def main():
     home_directory = os.environ["HOME"]
 
     parser = argparse.ArgumentParser(description='secure password holder')
-    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "Myscripts/Conf/passwd_holder.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
+    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "ktools_conf/passwd_holder.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
     parser.add_argument('--add', '-a', action='store_true', help="add a password")
     parser.set_defaults(add=False)
 

@@ -30,7 +30,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='scp helper for "vscode remote-ssh"')
     parser.add_argument("path", type=str, action="store", help="the path of folder or file contains remote pathes")
-    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "Myscripts/Conf/scphelper.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
+    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "ktools_conf/scphelper.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
     args = parser.parse_args()
 
     if os.path.exists(args.config)==False:
