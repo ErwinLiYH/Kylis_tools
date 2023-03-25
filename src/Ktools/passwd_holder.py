@@ -29,7 +29,7 @@ def get_passwd(conf_dict, pin):
             print("Thank you!")
             break
         elif key == "h()":
-            print("q() for leaving\ns() for showing all password keys")
+            print("q() for leaving\ns() for showing all password keys\nctrl-c for force quit")
         elif key == "s()":
             Kkit.print_list(list(conf_dict["passwds"].keys()), 5, verbose=False)
         else:
@@ -67,50 +67,49 @@ def store_passwd(conf_dict, conf_path, pin):
     print("password added/modified to %s"%conf_path)
 
 def main():
+    try:
+        home_directory = os.environ["HOME"]
 
-    home_directory = os.environ["HOME"]
+        parser = argparse.ArgumentParser(description='secure password holder')
+        parser.add_argument("--config", "-c", default=os.path.join(home_directory, "ktools_conf/passwd_holder.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
+        parser.add_argument('--add', '-a', action='store_true', help="add a password")
+        parser.set_defaults(add=False)
 
-    parser = argparse.ArgumentParser(description='secure password holder')
-    parser.add_argument("--config", "-c", default=os.path.join(home_directory, "ktools_conf/passwd_holder.conf"), type=str, action="store", help="the config file path, default is ~/Myscripts/Conf/scphelper.conf")
-    parser.add_argument('--add', '-a', action='store_true', help="add a password")
-    parser.set_defaults(add=False)
+        args = parser.parse_args()
 
-    args = parser.parse_args()
-
-    if os.path.exists(args.config) == False:
-        conf_dict = {}
-        while True:
-            pin = getpass.getpass("Initialize your pin: ")
-            pin2 = getpass.getpass("please input again: ")
-            if pin==pin2:
-                break
-            else:
-                print("password should be same as the first one!")
-        conf_dict["pin"] = base64.b64encode(pin.encode("utf-8")).decode('utf-8')
-        conf_dict["passwds"] = {}
-        Kkit.store(args.config, json.dumps(conf_dict, indent=4, ensure_ascii=False), encoding="utf-8")
-        print("initialize conf file in %s"%args.config)
-        print("You can add a password now")
-        store_passwd(conf_dict, args.config, pin)
-    else:
-        pin = getpass.getpass("pin: ")
-        conf_dict = read_config(args.config)
-        base64_pin = base64.b64encode(pin.encode("utf-8")).decode('utf-8')
-        right_base64_pin = conf_dict["pin"]
-        if right_base64_pin == base64_pin:
-            pass
-        else:
-            print("pin ERROR!")
-            exit(1)
-
-        if args.add:
-            print("You can add or modify a password now")
+        if os.path.exists(args.config) == False:
+            conf_dict = {}
+            while True:
+                pin = getpass.getpass("Initialize your pin: ")
+                pin2 = getpass.getpass("please input again: ")
+                if pin==pin2:
+                    break
+                else:
+                    print("password should be same as the first one!")
+            conf_dict["pin"] = base64.b64encode(pin.encode("utf-8")).decode('utf-8')
+            conf_dict["passwds"] = {}
+            Kkit.store(args.config, json.dumps(conf_dict, indent=4, ensure_ascii=False), encoding="utf-8")
+            print("initialize conf file in %s"%args.config)
+            print("You can add a password now")
             store_passwd(conf_dict, args.config, pin)
         else:
-            get_passwd(conf_dict, pin)
+            pin = getpass.getpass("pin: ")
+            conf_dict = read_config(args.config)
+            base64_pin = base64.b64encode(pin.encode("utf-8")).decode('utf-8')
+            right_base64_pin = conf_dict["pin"]
+            if right_base64_pin == base64_pin:
+                pass
+            else:
+                print("pin ERROR!")
+                exit(1)
+
+            if args.add:
+                print("You can add or modify a password now")
+                store_passwd(conf_dict, args.config, pin)
+            else:
+                get_passwd(conf_dict, pin)
+    except KeyboardInterrupt:
+        print("\nForce quit")
 
 if __name__=="__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Force quit")
+    main
