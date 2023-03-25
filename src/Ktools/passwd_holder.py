@@ -8,6 +8,7 @@ import base64
 import getpass
 # from cryptography.fernet import Fernet
 from Kkit import encryption
+from Kkit import fundict
 
 def read_config(config_path):
     return json.loads(Kkit.load(config_path, "utf-8"))
@@ -21,6 +22,7 @@ def gen_key(pin):
     return key
 
 def get_passwd(conf_dict, pin):
+    conf_dict = fundict.AbbrDict(conf_dict)
     while True:
         key  = input("input a password key: ")
         if key == "q()":
@@ -91,14 +93,14 @@ def main():
         print("You can add a password now")
         store_passwd(conf_dict, args.config, pin)
     else:
-        pin = getpass.getpass("password: ")
+        pin = getpass.getpass("pin: ")
         conf_dict = read_config(args.config)
         base64_pin = base64.b64encode(pin.encode("utf-8")).decode('utf-8')
         right_base64_pin = conf_dict["pin"]
         if right_base64_pin == base64_pin:
             pass
         else:
-            print("password ERROR!")
+            print("pin ERROR!")
             exit(1)
 
         if args.add:
