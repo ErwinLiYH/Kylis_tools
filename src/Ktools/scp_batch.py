@@ -1,14 +1,10 @@
-try:
-    import os
-    from paramiko import SSHClient
-    from scp import SCPClient
-    import argparse
-    import Kkit
-    import json
-    import getpass
-except:
-    print("requirements missing, try:\npip install paramiko scp git+https://github.com/erwinliyh/kylis_kit@main")
-    exit(1)
+import os
+from paramiko import SSHClient
+from scp import SCPClient
+import argparse
+import Kkit
+import json
+import getpass
 
 def run(path, ssh_argv):
     ssh = SSHClient()
@@ -54,4 +50,7 @@ def main():
     run(args.path, ssh_conf)
 
 if __name__=="__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Force quit")

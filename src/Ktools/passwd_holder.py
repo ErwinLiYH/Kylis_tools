@@ -1,17 +1,13 @@
-try:
-    import pyperclip
-    import argparse
-    import Kkit
-    import json
-    import os
-    import hashlib
-    import base64
-    import getpass
-    # from cryptography.fernet import Fernet
-    from Kkit import encryption
-except:
-    print("requirements missing, try:\npip install cryptography pyperclip git+https://github.com/erwinliyh/kylis_kit@main")
-    exit(1)
+import pyperclip
+import argparse
+import Kkit
+import json
+import os
+import hashlib
+import base64
+import getpass
+# from cryptography.fernet import Fernet
+from Kkit import encryption
 
 def read_config(config_path):
     return json.loads(Kkit.load(config_path, "utf-8"))
@@ -112,4 +108,7 @@ def main():
             get_passwd(conf_dict, pin)
 
 if __name__=="__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Force quit")

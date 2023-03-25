@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="Ktools",
-    version="0.0.1",
+    version="0.1.0",
     author="Erwin Li",
     author_email="erwinli@qq.com",
     description="some personnal tools",
@@ -26,8 +26,8 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'pwh = Ktools.passwd_holder:main',
-            'scph = Ktools.scp_batch:main',
+            'passwdhd=Ktools.passwd_holder:main',
+            'scphp=Ktools.scp_batch:main'
         ],
     },
     package_dir={"": "src"},
