@@ -1,0 +1,4 @@
+pyperclip
+paramiko
+scp
+git+https://github.com/erwinliyh/kylis_kit@main
