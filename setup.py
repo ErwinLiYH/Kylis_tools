@@ -26,7 +26,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'Ktools.passwdholder = Ktools.passwd_holder',
+            'Ktools.passwdholder = Ktools.passwd_holder:main',
         ],
     },
     package_dir={"": "src"},
