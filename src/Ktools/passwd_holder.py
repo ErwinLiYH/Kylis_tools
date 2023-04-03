@@ -112,4 +112,4 @@ def main():
         print("\nForce quit")
 
 if __name__=="__main__":
-    main
+    main()

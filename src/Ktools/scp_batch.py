@@ -46,6 +46,7 @@ def main():
                     print("password should be same as the first one!")
             conf_dict["password"] = passwd
             conf_dict["hostname"] = input("input host name: ")
+            Kkit.store(args.config, json.dumps(conf_dict, indent=4, ensure_ascii=False), "utf-8")
 
         ssh_conf = json.loads(Kkit.load(args.config, "utf-8"))
         run(args.path, ssh_conf)
