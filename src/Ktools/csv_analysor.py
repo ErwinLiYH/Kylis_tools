@@ -11,15 +11,16 @@ def main():
     parser.add_argument("--min", type=str, action="store", nargs="*", help="columns to min")
     parser.add_argument("--sd", type=str, action="store", nargs="*", help="columns to standard deviation")
     parser.add_argument("--basic", "-b", type=str, action="store", nargs="*", help="columns to standard deviation")
+    parser.add_argument("--separator", "-s", type=str, action="store", nargs="*", default=",", help="separator, default is ','")
 
     args = parser.parse_args()
 
     S = "-----------------------------------------------------"
 
     if args.file:
-        csv = pandas.read_csv(args.csv)
+        csv = pandas.read_csv(args.file, sep=args.separator)
     else:
-        csv = pandas.read_csv(StringIO(sys.stdin.read().strip()))
+        csv = pandas.read_csv(StringIO(sys.stdin.read().strip()), sep=args.separator)
 
     res = [S]
 
